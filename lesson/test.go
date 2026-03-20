@@ -38,6 +38,44 @@ func slice() {
 	fmt.Println(n)
 }
 
+func map_syudy() {
+	// マップはキーと値のペアを格納するデータ構造です。
+	// pythonの辞書と似ています。
+	m := map[string]int{"apple": 100, "banana": 200}
+	fmt.Println("マップの要素数は", len(m))
+	fmt.Println(m)
+	fmt.Println(m["apple"])
+
+	// マップに要素を追加することができます。
+	m["orange"] = 300
+	fmt.Println("orengeを追加")
+	fmt.Println(m)
+
+	// マップの要素を更新することができます。
+	m["apple"] = 150
+	fmt.Println("appleの値を更新")
+	fmt.Println(m)
+
+	// マップの要素を削除することができます。
+	delete(m, "banana")
+	fmt.Println("bananaを削除")
+	fmt.Println(m)
+
+	// マップの要素を取得することができます。
+	applePrice, ok := m["apple"]
+	if ok {
+		fmt.Println("appleの値は", applePrice)
+		fmt.Println(ok)
+	} else {
+		fmt.Println("appleはマップに存在しません")
+	}
+
+	// make関数を使用してマップを作成することもできます。
+	m2 := make(map[string]int)
+	m2["chocolate"] = 400
+	fmt.Println(m2)
+}
+
 func dateframe() {
 	// 2次元配列 5列の配列を作成(空の要素は0で埋められる)
 	var dateframe = [][5]int{
@@ -58,6 +96,7 @@ func main() {
 	list()
 	slice()
 	dateframe()
+	map_syudy()
 
 	var num int = 55
 	var text string = "Hello World\n %d"
