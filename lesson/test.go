@@ -101,6 +101,7 @@ func main() {
 	dateframe()
 	map_syudy()
 	widget.ConditionalBranch()
+	widget.Loop()
 
 	var num int = 55
 	var text string = "Hello World\n %d"
