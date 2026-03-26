@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"test_go/widget"
+)
 
 func bazz() {
 	fmt.Printf("Hey!!")
@@ -97,6 +100,7 @@ func main() {
 	slice()
 	dateframe()
 	map_syudy()
+	widget.ConditionalBranch()
 
 	var num int = 55
 	var text string = "Hello World\n %d"
