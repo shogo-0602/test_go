@@ -22,11 +22,15 @@ var logger *slog.Logger
 var logFile *os.File
 
 func loggerSetup() {
+	// ログファイルの名前を定義します。
 	logfile := "app.log"
+
+	// slog.HandlerOptionsを使用して、ログの出力形式や内容をカスタマイズします。
+	// AddSource: trueに設定すると、ログにソースコードの位置が追加されます。
 	ops := &slog.HandlerOptions{
 		AddSource: true, // ソースコードの位置をログに追加します。
 		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
-			// タイムスタンプをISO8601形式に変換します。
+			// ログのタイムスタンプを人間が読みやすい形式に変換します。
 			if a.Key == slog.TimeKey {
 				a.Value = slog.StringValue(a.Value.Time().Format("2006/01/02 15:04:05"))
 			}
@@ -40,12 +44,24 @@ func loggerSetup() {
 
 	// ログファイルを開きます。存在しない場合は作成されます。
 	var err error
+	/*
+		os.O_CREATE: ファイルが存在しない場合に新しいファイルを作成します。
+		os.O_WRONLY: ファイルを開くときに書き込み専用で開きます。
+		os.O_APPEND: ファイルに書き込むときに、既存の内容の末尾に追加します。
+		0644: ファイルのパーミッションを設定します。ここでは、所有者が読み書きでき、グループとその他のユーザーが読み取りのみできるように設定しています。
+	*/
 	logFile, err = os.OpenFile(logfile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("ログファイルのオープンに失敗: %v", err)
 	}
 
 	// ロガーを初期化します。ここでは、標準出力と標準エラーの両方にログを出力するように設定しています。
+	/*
+		os.Stdout: 標準出力にログを出力します。
+		os.Stderr: 標準エラーにログを出力します。
+		logFile: ログファイルにログを出力します。
+		ops: slog.HandlerOptionsで定義したオプションを使用して、ログの出力形式や内容をカスタマイズします。
+	*/
 	multi_writer := io.MultiWriter(os.Stdout, os.Stderr, logFile)
 	logger = slog.New(slog.NewJSONHandler(multi_writer, ops))
 }
