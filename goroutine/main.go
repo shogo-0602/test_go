@@ -69,6 +69,30 @@ func init() {
 	loggerSetup()
 }
 
+func conditionalBranch() {
+	// チャネルを使用して、条件分岐の例を実行するゴルーチンを起動。
+	ch := make(chan string)
+	fmt.Println("条件分岐のゴルーチンを起動します。")
+	go func() {
+		x := 10
+		if x > 5 {
+			ch <- "xは5より大きい"
+		} else if x == 5 {
+			ch <- "xは5と等しい"
+		} else {
+			ch <- "xは5より小さい"
+		}
+		close(ch) // チャネルを閉じて、受信側に終了を通知。
+	}()
+	fmt.Println("条件分岐のゴルーチンが実行されました。")
+
+	// チャネルからメッセージを受信して表示。
+	for message := range ch {
+		fmt.Println("条件分岐の結果:", message)
+	}
+
+}
+
 func main() {
 	// logger.logging チャネルを処理するゴルーチンを起動。
 	// リスナーがないとチャネルへの送信がブロックされ、デッドロックが発生するため必須。
@@ -95,4 +119,10 @@ func main() {
 	// workerゴルーチンの完了を待つため、少し遅延を入れてからチャネルをclose。
 	// (実運用ではsync.WaitGroupを使用が推奨)
 	close(logger.logging)
+
+	fmt.Println("メインゴルーチンが終了します。")
+	fmt.Println("goroutineの条件分岐を実行します。")
+	conditionalBranch() // 条件分岐の例を実行するゴルーチンを起動。
+	fmt.Println("条件分岐のゴルーチンが起動されました。")
+
 }
